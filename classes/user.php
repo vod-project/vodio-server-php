@@ -17,7 +17,7 @@ class User{
         $this->conn = $db;
     }
     
-    // create product
+    // create user
 	function create(){
 	 
 		// query to insert record
@@ -30,11 +30,7 @@ class User{
 		$stmt = $this->conn->prepare($query);
 	 
 		// sanitize
-		$this->login=htmlspecialchars(strip_tags($this->login));
-		$this->password=htmlspecialchars(strip_tags($this->password));
-		$this->name=htmlspecialchars(strip_tags($this->name));
-		$this->surname=htmlspecialchars(strip_tags($this->surname));
-		$this->email=htmlspecialchars(strip_tags($this->email));
+		sanitzeAttrs();
 	 
 		// bind values
 		$stmt->bindParam(":login", $this->login);
@@ -48,9 +44,34 @@ class User{
 		    return true;
 		}
 	 
-		return false;
-		 
+		return false;	 
 	}
+        
+        // delete user
+        function delete(){
+            $query = "DELETE FROM " . $this->table_name
+                    . " WHERE login=:login";
+            
+            $stmt = $this->conn->prepare($query);
+            
+            sanitizeAttrs();
+            
+            $stmt->bindParam(":login", $this->login);
+            
+            if($stmt->execute()){
+                return true;
+            }
+            return false;
+            
+        }
+        
+        function sanitizeAttrs(){
+            $this->login=htmlspecialchars(strip_tags($this->login));
+		$this->password=htmlspecialchars(strip_tags($this->password));
+		$this->name=htmlspecialchars(strip_tags($this->name));
+		$this->surname=htmlspecialchars(strip_tags($this->surname));
+		$this->email=htmlspecialchars(strip_tags($this->email));
+        }
 	
 	// get by login
 	function getData(){
@@ -87,6 +108,6 @@ class User{
     $this->email = $row['email'];
     $this->password = $row['password'];
     $this->login = $row['login'];
-	}
+    }
 }
 ?>
