@@ -51,10 +51,12 @@ class User{
         function delete(){
             $query = "DELETE FROM " . $this->table_name
                     . " WHERE login=:login";
-            
             $stmt = $this->conn->prepare($query);
+            if(! $this->login){
+                return false;
+            }
+            $this->login=htmlspecialchars(strip_tags($this->login));
             
-            sanitizeAttrs();
             
             $stmt->bindParam(":login", $this->login);
             
@@ -67,10 +69,10 @@ class User{
         
         function sanitizeAttrs(){
             $this->login=htmlspecialchars(strip_tags($this->login));
-		$this->password=htmlspecialchars(strip_tags($this->password));
-		$this->name=htmlspecialchars(strip_tags($this->name));
-		$this->surname=htmlspecialchars(strip_tags($this->surname));
-		$this->email=htmlspecialchars(strip_tags($this->email));
+            $this->password=htmlspecialchars(strip_tags($this->password));
+            $this->name=htmlspecialchars(strip_tags($this->name));
+            $this->surname=htmlspecialchars(strip_tags($this->surname));
+            $this->email=htmlspecialchars(strip_tags($this->email));
         }
 	
 	// get by login

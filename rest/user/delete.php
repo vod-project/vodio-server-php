@@ -20,6 +20,6 @@
             "result" => $result
         );
         
-        print_r(json_encore($response_arr));
+        print_r(json_encode($response_arr));
         
 ?>
