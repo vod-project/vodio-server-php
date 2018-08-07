@@ -6,6 +6,7 @@ class Vod{
     public $title;
     public $tags;
     public $audioFilePath;
+    public $idVod;
     	// database connection and table name
     private $conn;
     private $table_name = "VOD";
@@ -16,16 +17,21 @@ class Vod{
     }
     
     function create(){
+       
         $query = "INSERT INTO " . $this->table_name . " "
                 . "SET timeInSeconds=:timeSecond, loginAuthor=:loginAuthor, title=:title";
-        
+
         $stmt = $this->conn->prepare($query);
         // sanitize Attrs like for user 
-        
+
+        if(!($this->timeInSecond && $this->authorLogin && $this->title)){
+            return false;
+        }
+
         $stmt->bindParam(":timeSecond", $this->timeInSecond);
         $stmt->bindParam(":loginAuthor", $this->authorLogin);
         $stmt->bindParam(":title", $this->title);
-        
+
         if($stmt->execute()){
             return true;
         }

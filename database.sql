@@ -21,8 +21,13 @@ CREATE TABLE USER(
 select * from USER;
 
 
+
 CREATE TABLE VOD(
+ 	idVod INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	timeInSeconds INTEGER,
 	loginAuthor VARCHAR(255),
 	title VARCHAR(255)
 );
+
+
+select * from VOD;		

@@ -22,28 +22,27 @@ class User{
 	 
 		// query to insert record
 		$query = "INSERT INTO
-		            " . $this->table_name . "
-		        SET login=:login, password=:password, name=:name, surname=:surname,
-		        	email=:email";
+		            " . $this->table_name . " SET login=:login, password=:password, username=:name, surname=:surname, email=:email";
 	 
 		// prepare query
 		$stmt = $this->conn->prepare($query);
 	 
 		// sanitize
-		sanitzeAttrs();
-	 
+		//sanitzeAttrs();
+                
 		// bind values
 		$stmt->bindParam(":login", $this->login);
 		$stmt->bindParam(":password", $this->password);
 		$stmt->bindParam(":name", $this->name);
 		$stmt->bindParam(":surname", $this->surname);
 		$stmt->bindParam(":email", $this->email);
-	 
+                
 		// execute query
 		if($stmt->execute()){
-		    return true;
+		
+                    return true;
 		}
-	 
+              
 		return false;	 
 	}
         
@@ -79,9 +78,8 @@ class User{
 	function getData(){
 		// query to read single record
     $query = "SELECT
-                login,password,name,surname,email
-            FROM
-                " . $this->table_name . " 
+                login,password,username,surname,email
+            FROM " . $this->table_name . "  
             WHERE
                 login = ?";
  	if(isset($this->password)){
@@ -95,8 +93,8 @@ class User{
     $stmt->bindParam(1, $this->login);
 
     if(isset($this->password)){
- 		$stmt->bindParam(2, $this->password);
- 	}
+ 	$stmt->bindParam(2, $this->password);
+    }
  
     // execute query
     $stmt->execute();
@@ -105,7 +103,7 @@ class User{
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
  
     // set values to object properties
-    $this->name = $row['name'];
+    $this->name = $row['username'];
     $this->surname = $row['surname'];
     $this->email = $row['email'];
     $this->password = $row['password'];
