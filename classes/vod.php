@@ -6,6 +6,7 @@ class Vod{
     public $title;
     public $tags;
     public $audioFilePath;
+    public $file;
     public $idVod;
     	// database connection and table name
     private $conn;
@@ -31,7 +32,9 @@ class Vod{
         $stmt->bindParam(":timeSecond", $this->timeInSecond);
         $stmt->bindParam(":loginAuthor", $this->authorLogin);
         $stmt->bindParam(":title", $this->title);
-
+        if(isset($file)){
+            $stmt->bindParam(":fileBlob",file_get_contents($this->file["tmp_name"]));
+        }
         if($stmt->execute()){
             return true;
         }
